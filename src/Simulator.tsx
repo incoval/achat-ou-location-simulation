@@ -20,7 +20,11 @@ export function Simulator() {
   const [maintenanceAuto, setMaintenanceAuto] = useState(true);
   const [appProperty, setAppProperty] = useState(DEFAULTS.appreciationProperty);
   const [appRent, setAppRent] = useState(DEFAULTS.appreciationRent);
-  const [investReturn] = useState(DEFAULTS.investReturn);
+  // Hypothèses éditables
+  const [notaryRate, setNotaryRate] = useState(DEFAULTS.notaryRate * 100); // en %
+  const [insuranceRate, setInsuranceRate] = useState(DEFAULTS.insuranceRate * 100); // en %
+  const [maintenanceAutoRate, setMaintenanceAutoRate] = useState(0.5); // % du bien / an
+  const [investReturn, setInvestReturn] = useState(DEFAULTS.investReturn);
   const [showHypo, setShowHypo] = useState(false);
 
   const handleCity = (c: City) => {
@@ -40,10 +44,14 @@ export function Simulator() {
     setMaintenanceAuto(true);
     setAppProperty(DEFAULTS.appreciationProperty);
     setAppRent(DEFAULTS.appreciationRent);
+    setNotaryRate(DEFAULTS.notaryRate * 100);
+    setInsuranceRate(DEFAULTS.insuranceRate * 100);
+    setMaintenanceAutoRate(0.5);
+    setInvestReturn(DEFAULTS.investReturn);
   };
 
   const propertyPrice = pricePerM2 * surface;
-  const autoMaintenance = Math.round(propertyPrice * 0.005);
+  const autoMaintenance = Math.round(propertyPrice * (maintenanceAutoRate / 100));
   const effectiveMaintenance = maintenanceAuto ? autoMaintenance : maintenance;
 
   const result = useMemo(
@@ -55,8 +63,8 @@ export function Simulator() {
         apport,
         rate,
         durationYears: duration,
-        notaryRate: DEFAULTS.notaryRate,
-        insuranceRate: DEFAULTS.insuranceRate,
+        notaryRate: notaryRate / 100,
+        insuranceRate: insuranceRate / 100,
         charges,
         maintenance: effectiveMaintenance,
         appreciationProperty: appProperty,
@@ -64,7 +72,7 @@ export function Simulator() {
         horizonYears: DEFAULTS.horizonYears,
         investReturn,
       }),
-    [pricePerM2, surface, monthlyRent, apport, rate, duration, charges, effectiveMaintenance, appProperty, appRent, investReturn]
+    [pricePerM2, surface, monthlyRent, apport, rate, duration, charges, effectiveMaintenance, appProperty, appRent, investReturn, notaryRate, insuranceRate]
   );
 
   const equivalentRent = Math.round(result.equivalentRent);
