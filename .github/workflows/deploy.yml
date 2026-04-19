@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: 20
       - name: Install dependencies
-        run: npm ci
+        run: npm install --no-audit --no-fund
       - name: Build SPA
         run: npx vite build --config vite.spa.config.ts
       - name: Add 404.html for SPA routing
