@@ -82,14 +82,24 @@ export function Simulator() {
   return (
     <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Acheter ou louer ?{" "}
-            <span className="bg-[var(--gradient-hero)] bg-clip-text text-transparent">Le simulateur</span>
-          </h1>
-          <p className="mt-2 text-muted-foreground">
-            Comparez l'achat et la location de votre résidence principale dans les 10 plus grandes villes françaises.
-          </p>
+        <header className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+              Acheter ou louer ?{" "}
+              <span className="bg-[var(--gradient-hero)] bg-clip-text text-transparent">Le simulateur</span>
+            </h1>
+            <p className="mt-2 text-muted-foreground">
+              Comparez l'achat et la location de votre résidence principale dans les 10 plus grandes villes françaises.
+            </p>
+          </div>
+          <Link
+            to="/scpi"
+            className="group inline-flex shrink-0 items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-4 py-3 text-sm font-semibold text-primary shadow-[var(--shadow-card)] transition-all hover:bg-primary hover:text-primary-foreground"
+          >
+            <TrendingUp className="h-4 w-4" />
+            Comparer avec les SCPI
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+          </Link>
         </header>
 
         <div className="mb-5">

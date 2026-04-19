@@ -222,7 +222,7 @@ function ScpiPage() {
                     <XAxis dataKey="year" stroke="hsl(var(--muted-foreground))" tickFormatter={(v) => `${v}a`} />
                     <YAxis stroke="hsl(var(--muted-foreground))" tickFormatter={(v) => `${Math.round(v / 1000)}k`} />
                     <Tooltip
-                      formatter={(v: number) => fmtEUR(v)}
+                      formatter={(v) => fmtEUR(Number(v))}
                       contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8 }}
                     />
                     <Legend />
