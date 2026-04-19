@@ -215,19 +215,46 @@ function ScpiPage() {
 
             <div className="rounded-2xl border border-border bg-card p-5 shadow-[var(--shadow-card)]">
               <h2 className="mb-4 text-lg font-semibold">Évolution du patrimoine</h2>
-              <div className="h-[320px] w-full">
+              <div className="h-[360px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={result.data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                    <XAxis dataKey="year" stroke="hsl(var(--muted-foreground))" tickFormatter={(v) => `${v}a`} />
-                    <YAxis stroke="hsl(var(--muted-foreground))" tickFormatter={(v) => `${Math.round(v / 1000)}k`} />
+                  <LineChart data={result.data} margin={{ top: 10, right: 16, left: 8, bottom: 8 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.9 0.01 260)" />
+                    <XAxis
+                      dataKey="year"
+                      tick={{ fill: "oklch(0.45 0.03 260)", fontSize: 12 }}
+                      tickFormatter={(v) => `${v}a`}
+                    />
+                    <YAxis
+                      tick={{ fill: "oklch(0.45 0.03 260)", fontSize: 12 }}
+                      tickFormatter={(v) => `${Math.round(v / 1000)}k`}
+                    />
                     <Tooltip
                       formatter={(v) => fmtEUR(Number(v))}
-                      contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8 }}
+                      labelFormatter={(l) => `Année ${l}`}
+                      contentStyle={{
+                        backgroundColor: "oklch(1 0 0)",
+                        border: "1px solid oklch(0.9 0.01 260)",
+                        borderRadius: 12,
+                        fontSize: 12,
+                      }}
                     />
-                    <Legend />
-                    <Line type="monotone" dataKey="netWorth" name="Patrimoine net" stroke="hsl(var(--primary))" strokeWidth={2.5} dot={false} />
-                    <Line type="monotone" dataKey="cumulativeRent" name="Loyers nets cumulés" stroke="hsl(var(--chart-2, 142 71% 45%))" strokeWidth={2} dot={false} />
+                    <Legend wrapperStyle={{ fontSize: 12 }} />
+                    <Line
+                      type="monotone"
+                      dataKey="netWorth"
+                      name="Patrimoine net"
+                      stroke="oklch(0.6 0.2 250)"
+                      strokeWidth={2.5}
+                      dot={false}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="cumulativeRent"
+                      name="Loyers nets cumulés"
+                      stroke="oklch(0.65 0.18 145)"
+                      strokeWidth={2.5}
+                      dot={false}
+                    />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
