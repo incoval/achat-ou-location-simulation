@@ -1,24 +1,24 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import tailwindcss from "@tailwindcss/vite";
-import tsconfigPaths from "vite-tsconfig-paths";
-import { tanstackRouter } from "@tanstack/router-plugin/vite";
+import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
-// Pure SPA build for GitHub Pages — no TanStack Start SSR/prerender.
-// The app mounts via src/main.tsx -> RouterProvider in the browser.
 export default defineConfig({
-  base: "/achat-ou-location-simulation/",
-  define: {
-    "import.meta.env.VITE_ROUTER_BASEPATH": JSON.stringify("/achat-ou-location-simulation"),
+  tanstackStart: {
+    prerender: {
+      enabled: true,
+      crawlLinks: true,
+    },
+    pages: [
+      { path: "/" },
+      { path: "/scpi" },
+    ],
   },
-  plugins: [
-    tanstackRouter({ target: "react", autoCodeSplitting: true }),
-    react(),
-    tailwindcss(),
-    tsconfigPaths(),
-  ],
-  build: {
-    outDir: "dist-spa",
-    emptyOutDir: true,
+  vite: {
+    base: "/achat-ou-location-simulation/",
+    build: {
+      outDir: "dist-spa",
+      emptyOutDir: true,
+    },
+    define: {
+      "import.meta.env.VITE_ROUTER_BASEPATH": JSON.stringify("/achat-ou-location-simulation"),
+    },
   },
 });
