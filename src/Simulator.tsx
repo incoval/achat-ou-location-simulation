@@ -83,9 +83,13 @@ export function Simulator() {
           </p>
         </header>
 
+        <div className="mb-5">
+          <CityPicker selected={city.name} onSelect={handleCity} onReset={handleReset} />
+        </div>
+
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
+          {/* Colonne gauche : paramètres compacts */}
           <div className="space-y-5 lg:col-span-4">
-            <CityPicker selected={city.name} onSelect={handleCity} onReset={handleReset} />
             <div className="rounded-2xl border border-border bg-card p-5 shadow-[var(--shadow-card)]">
               <h2 className="mb-4 text-lg font-semibold">Le bien</h2>
               <LabeledSlider
@@ -99,23 +103,22 @@ export function Simulator() {
                 max={200}
                 format={(v) => `${v} m²`}
               />
-              <div className="mt-5 space-y-2">
-                <span className="text-sm font-medium">Prix au m² (€)</span>
-                <Input type="number" value={pricePerM2} onChange={(e) => setPricePerM2(Number(e.target.value) || 0)} />
+              <div className="mt-4 grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <span className="text-xs font-medium text-muted-foreground">Prix au m² (€)</span>
+                  <Input type="number" value={pricePerM2} onChange={(e) => setPricePerM2(Number(e.target.value) || 0)} />
+                </div>
+                <div className="space-y-1.5">
+                  <span className="text-xs font-medium text-muted-foreground">Loyer / mois (€)</span>
+                  <Input type="number" value={monthlyRent} onChange={(e) => setMonthlyRent(Number(e.target.value) || 0)} />
+                </div>
               </div>
-              <div className="mt-5 space-y-2">
-                <span className="text-sm font-medium">Loyer mensuel équivalent (€)</span>
-                <Input type="number" value={monthlyRent} onChange={(e) => setMonthlyRent(Number(e.target.value) || 0)} />
-              </div>
-              <div className="mt-4 rounded-xl bg-muted/40 p-4">
+              <div className="mt-4 rounded-xl bg-muted/40 p-3">
                 <div className="text-xs text-muted-foreground">Prix du bien</div>
-                <div className="mt-1 text-2xl font-bold">{fmtEUR(propertyPrice)}</div>
-                <div className="mt-1 text-xs text-muted-foreground">Loyer estimé : {fmtEUR(equivalentRent)} / mois</div>
+                <div className="mt-0.5 text-xl font-bold">{fmtEUR(propertyPrice)}</div>
               </div>
             </div>
-          </div>
 
-          <div className="space-y-5 lg:col-span-4">
             <div className="rounded-2xl border border-border bg-card p-5 shadow-[var(--shadow-card)]">
               <h2 className="mb-4 text-lg font-semibold">Financement</h2>
               <div className="space-y-5">
@@ -124,6 +127,7 @@ export function Simulator() {
                 <LabeledSlider label="Durée du prêt" value={duration} onChange={setDuration} min={5} max={30} format={(v) => `${v} ans`} />
               </div>
             </div>
+
             <div className="rounded-2xl border border-border bg-card p-5 shadow-[var(--shadow-card)]">
               <h2 className="mb-4 text-lg font-semibold">Charges & hypothèses</h2>
               <div className="space-y-5">
@@ -151,8 +155,9 @@ export function Simulator() {
             </div>
           </div>
 
-          <div className="space-y-5 lg:col-span-4">
-            <div className="grid grid-cols-2 gap-4">
+          {/* Colonne droite : résultats + graphique above the fold */}
+          <div className="space-y-5 lg:col-span-8">
+            <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
               <StatCard label="Coût total achat" value={fmtEUR(result.totalPrice)} sub="prix + 7,5% notaire" />
               <StatCard label="Mensualité totale" value={fmtEUR(Math.round(result.totalMonthly))} sub="crédit + assurance" />
               <StatCard
@@ -168,9 +173,7 @@ export function Simulator() {
                 tone={result.breakEven ? "success" : "default"}
               />
             </div>
-          </div>
 
-          <div className="lg:col-span-12">
             <div className="rounded-2xl border border-border bg-card p-5 shadow-[var(--shadow-card)]">
               <h2 className="mb-4 text-lg font-semibold">Évolution sur 25 ans</h2>
               <EvolutionChart data={result.data} />
