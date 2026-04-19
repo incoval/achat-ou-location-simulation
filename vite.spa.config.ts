@@ -13,6 +13,22 @@ export default defineConfig({
   },
   vite: {
     base: "/achat-ou-location-simulation/",
+    environments: {
+      ssr: {
+        build: {
+          rollupOptions: {
+            output: {
+              entryFileNames: "server.js",
+            },
+          },
+          rolldownOptions: {
+            output: {
+              entryFileNames: "server.js",
+            },
+          },
+        },
+      },
+    },
     build: {
       outDir: "dist-spa",
       emptyOutDir: true,
