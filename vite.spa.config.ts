@@ -6,7 +6,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 // Standalone SPA build for GitHub Pages.
 // Used by .github/workflows/deploy.yml — does NOT affect Lovable preview.
 export default defineConfig({
-  base: "/dynamic-finance-simulator/",
+  base: "/achat-ou-location-simulation/",
   plugins: [react(), tailwindcss(), tsconfigPaths()],
   build: {
     outDir: "dist-spa",
