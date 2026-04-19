@@ -5,6 +5,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 // Standalone SPA build for GitHub Pages.
 // Used by .github/workflows/deploy.yml — does NOT affect Lovable preview.
+// Deployed at: https://incoval.github.io/achat-ou-location-simulation/
 export default defineConfig({
   base: "/achat-ou-location-simulation/",
   plugins: [react(), tailwindcss(), tsconfigPaths()],
