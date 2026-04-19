@@ -20,7 +20,11 @@ export function Simulator() {
   const [maintenanceAuto, setMaintenanceAuto] = useState(true);
   const [appProperty, setAppProperty] = useState(DEFAULTS.appreciationProperty);
   const [appRent, setAppRent] = useState(DEFAULTS.appreciationRent);
-  const [investReturn] = useState(DEFAULTS.investReturn);
+  // Hypothèses éditables
+  const [notaryRate, setNotaryRate] = useState(DEFAULTS.notaryRate * 100); // en %
+  const [insuranceRate, setInsuranceRate] = useState(DEFAULTS.insuranceRate * 100); // en %
+  const [maintenanceAutoRate, setMaintenanceAutoRate] = useState(0.5); // % du bien / an
+  const [investReturn, setInvestReturn] = useState(DEFAULTS.investReturn);
   const [showHypo, setShowHypo] = useState(false);
 
   const handleCity = (c: City) => {
@@ -40,10 +44,14 @@ export function Simulator() {
     setMaintenanceAuto(true);
     setAppProperty(DEFAULTS.appreciationProperty);
     setAppRent(DEFAULTS.appreciationRent);
+    setNotaryRate(DEFAULTS.notaryRate * 100);
+    setInsuranceRate(DEFAULTS.insuranceRate * 100);
+    setMaintenanceAutoRate(0.5);
+    setInvestReturn(DEFAULTS.investReturn);
   };
 
   const propertyPrice = pricePerM2 * surface;
-  const autoMaintenance = Math.round(propertyPrice * 0.005);
+  const autoMaintenance = Math.round(propertyPrice * (maintenanceAutoRate / 100));
   const effectiveMaintenance = maintenanceAuto ? autoMaintenance : maintenance;
 
   const result = useMemo(
@@ -55,8 +63,8 @@ export function Simulator() {
         apport,
         rate,
         durationYears: duration,
-        notaryRate: DEFAULTS.notaryRate,
-        insuranceRate: DEFAULTS.insuranceRate,
+        notaryRate: notaryRate / 100,
+        insuranceRate: insuranceRate / 100,
         charges,
         maintenance: effectiveMaintenance,
         appreciationProperty: appProperty,
@@ -64,7 +72,7 @@ export function Simulator() {
         horizonYears: DEFAULTS.horizonYears,
         investReturn,
       }),
-    [pricePerM2, surface, monthlyRent, apport, rate, duration, charges, effectiveMaintenance, appProperty, appRent, investReturn]
+    [pricePerM2, surface, monthlyRent, apport, rate, duration, charges, effectiveMaintenance, appProperty, appRent, investReturn, notaryRate, insuranceRate]
   );
 
   const equivalentRent = Math.round(result.equivalentRent);
@@ -189,18 +197,72 @@ export function Simulator() {
               <ChevronDown className={`h-5 w-5 transition-transform ${showHypo ? "rotate-180" : ""}`} />
             </button>
             {showHypo && (
-              <div className="mt-3 rounded-2xl border border-border bg-card p-5 text-sm text-muted-foreground shadow-[var(--shadow-card)]">
-                <ul className="list-disc space-y-2 pl-5">
-                  <li>Frais de notaire estimés à 7,5 % du prix du bien.</li>
-                  <li>Assurance emprunteur : 0,36 % annuel du capital emprunté.</li>
-                  <li>Mensualité calculée selon la formule du prêt à mensualités constantes.</li>
-                  <li>Entretien auto : 0,5 % annuel de la valeur du bien.</li>
-                  <li>
-                    Patrimoine net = (valeur bien revalorisée − capital restant dû − coûts cumulés − apport) − (apport + différentiel
-                    mensuel investis à {investReturn}% − loyers cumulés).
-                  </li>
-                  <li>Revalorisation appliquée annuellement, intérêts amortis mensuellement.</li>
-                </ul>
+              <div className="mt-3 rounded-2xl border border-border bg-card p-5 shadow-[var(--shadow-card)]">
+                <p className="mb-4 text-sm text-muted-foreground">
+                  Ajustez les paramètres avancés du calcul. Les valeurs par défaut correspondent aux moyennes du marché français.
+                </p>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-foreground">Frais de notaire (%)</label>
+                    <Input
+                      type="number"
+                      step="0.1"
+                      min={0}
+                      max={20}
+                      value={notaryRate}
+                      onChange={(e) => setNotaryRate(Math.max(0, Math.min(20, Number(e.target.value) || 0)))}
+                    />
+                    <p className="text-xs text-muted-foreground">% du prix du bien</p>
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-foreground">Assurance emprunteur (%)</label>
+                    <Input
+                      type="number"
+                      step="0.01"
+                      min={0}
+                      max={5}
+                      value={insuranceRate}
+                      onChange={(e) => setInsuranceRate(Math.max(0, Math.min(5, Number(e.target.value) || 0)))}
+                    />
+                    <p className="text-xs text-muted-foreground">% annuel du capital emprunté</p>
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-foreground">Entretien auto (%)</label>
+                    <Input
+                      type="number"
+                      step="0.1"
+                      min={0}
+                      max={5}
+                      value={maintenanceAutoRate}
+                      onChange={(e) => setMaintenanceAutoRate(Math.max(0, Math.min(5, Number(e.target.value) || 0)))}
+                      disabled={!maintenanceAuto}
+                    />
+                    <p className="text-xs text-muted-foreground">% annuel de la valeur du bien</p>
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-foreground">Rendement placement (%)</label>
+                    <Input
+                      type="number"
+                      step="0.1"
+                      min={0}
+                      max={20}
+                      value={investReturn}
+                      onChange={(e) => setInvestReturn(Math.max(0, Math.min(20, Number(e.target.value) || 0)))}
+                    />
+                    <p className="text-xs text-muted-foreground">% annuel du capital investi par le locataire</p>
+                  </div>
+                </div>
+                <div className="mt-5 rounded-xl bg-muted/40 p-4 text-xs text-muted-foreground">
+                  <p className="mb-2 font-medium text-foreground">Formules utilisées</p>
+                  <ul className="list-disc space-y-1 pl-5">
+                    <li>Mensualité calculée selon la formule du prêt à mensualités constantes.</li>
+                    <li>
+                      Patrimoine net = (valeur bien revalorisée − capital restant dû − coûts cumulés − apport) − (apport + différentiel
+                      mensuel investis au rendement placement − loyers cumulés).
+                    </li>
+                    <li>Revalorisation appliquée annuellement, intérêts amortis mensuellement.</li>
+                  </ul>
+                </div>
               </div>
             )}
           </div>
