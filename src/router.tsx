@@ -55,9 +55,13 @@ function DefaultErrorComponent({ error, reset }: { error: Error; reset: () => vo
 }
 
 export const getRouter = () => {
+  // Base path injected at build time. Empty for Lovable preview, "/achat-ou-location-simulation" for GitHub Pages.
+  const basepath = (import.meta.env.VITE_ROUTER_BASEPATH as string | undefined) || undefined;
+
   const router = createRouter({
     routeTree,
     context: {},
+    basepath,
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
     defaultErrorComponent: DefaultErrorComponent,

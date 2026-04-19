@@ -8,6 +8,9 @@ import tsconfigPaths from "vite-tsconfig-paths";
 // Deployed at: https://incoval.github.io/achat-ou-location-simulation/
 export default defineConfig({
   base: "/achat-ou-location-simulation/",
+  define: {
+    "import.meta.env.VITE_ROUTER_BASEPATH": JSON.stringify("/achat-ou-location-simulation"),
+  },
   plugins: [react(), tailwindcss(), tsconfigPaths()],
   build: {
     outDir: "dist-spa",
