@@ -1,11 +1,12 @@
 import { useMemo, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { CITIES, DEFAULTS, compute, fmtEUR, type City } from "@/lib/simulator";
 import { CityPicker } from "@/components/sim/CityPicker";
 import { LabeledSlider } from "@/components/sim/Slider";
 import { StatCard } from "@/components/sim/StatCard";
 import { EvolutionChart } from "@/components/sim/EvolutionChart";
 import { Input } from "@/components/ui/input";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, TrendingUp, ArrowRight } from "lucide-react";
 
 export function Simulator() {
   const [city, setCity] = useState<City>(CITIES[0]);
