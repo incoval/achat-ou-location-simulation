@@ -27,12 +27,12 @@ jobs:
       - name: Build SPA
         run: npx vite build --config vite.spa.config.ts
       - name: Add 404.html for SPA routing
-        run: cp dist-spa/client/index.html dist-spa/client/404.html
+        run: cp dist-spa/index.html dist-spa/404.html
       - name: Add .nojekyll
-        run: touch dist-spa/client/.nojekyll
+        run: touch dist-spa/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist-spa/client
+          path: dist-spa
 
   deploy:
     needs: build

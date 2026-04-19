@@ -4,7 +4,12 @@ export default defineConfig({
   tanstackStart: {
     prerender: {
       enabled: true,
+      crawlLinks: true,
     },
+    pages: [
+      { path: "/" },
+      { path: "/scpi" },
+    ],
   },
   vite: {
     base: "/achat-ou-location-simulation/",
