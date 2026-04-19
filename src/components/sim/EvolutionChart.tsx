@@ -48,7 +48,7 @@ export function EvolutionChart({ data }: { data: Point[] }) {
               borderRadius: 12,
               fontSize: 12,
             }}
-            formatter={(value: number, name: string) => [fmtEUR(Number(value)), name]}
+            formatter={(value, name) => [fmtEUR(Number(value)), String(name)]}
             labelFormatter={(l) => `Année ${l}`}
           />
           <Legend wrapperStyle={{ fontSize: 12 }} />
