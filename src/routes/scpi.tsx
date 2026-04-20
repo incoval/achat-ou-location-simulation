@@ -76,9 +76,7 @@ function ScpiPage() {
             Retour au simulateur achat / location
           </Link>
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Investir en{" "}
-            <span className="bg-[var(--gradient-hero)] bg-clip-text text-transparent">SCPI</span>{" "}
-            — à crédit ou comptant ?
+            Investir en <span className="text-primary">SCPI</span> — à crédit ou comptant ?
           </h1>
           <p className="mt-2 text-muted-foreground">
             Simulez un investissement en parts de SCPI et comparez les scénarios financés ou non, sur 25 ans.
